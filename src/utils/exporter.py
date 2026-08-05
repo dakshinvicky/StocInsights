@@ -1,6 +1,6 @@
 """
-Data Exporter Engine for GitHub Pages Static Site.
-Ensures 100% valid JSON compliance (replaces NaN with None/N/A).
+Data Exporter Engine for StockIns8 Static Site (GitHub Pages).
+Purges old JSON files and ensures 100% valid JSON compliance.
 """
 
 import os
@@ -16,11 +16,9 @@ def clean_records_for_json(df: pd.DataFrame) -> list:
     if df.empty:
         return []
     
-    # Replace NaN, NaT, and infinity values with None or default strings
     cleaned_df = df.replace([np.nan, np.inf, -np.inf], None)
     records = cleaned_df.to_dict(orient="records")
     
-    # Double sanitize dict records
     for record in records:
         for k, v in record.items():
             if isinstance(v, float) and (np.isnan(v) or np.isinf(v)):
@@ -29,10 +27,24 @@ def clean_records_for_json(df: pd.DataFrame) -> list:
 
 
 def export_json_data(output_dir: str = "data") -> bool:
-    """Fetch live data and export static JSON files to output_dir."""
+    """Purge old data, fetch fresh live data and export static JSON files."""
     try:
         os.makedirs(output_dir, exist_ok=True)
-        print(f"[Exporter] Generating static dataset in '{output_dir}'...")
+        print(f"[Exporter] Purging old datasets in '{output_dir}'...")
+
+        # Completely delete existing JSON files to guarantee clean creation
+        fii_file = os.path.join(output_dir, "fii_dii.json")
+        div_file = os.path.join(output_dir, "dividends.json")
+
+        if os.path.exists(fii_file):
+            os.remove(fii_file)
+            print(f"[Exporter] Deleted old {fii_file}")
+
+        if os.path.exists(div_file):
+            os.remove(div_file)
+            print(f"[Exporter] Deleted old {div_file}")
+
+        print(f"[Exporter] Generating fresh static datasets in '{output_dir}'...")
 
         # 1. Daily FII/DII & Stock Shareholding
         fii_dii_client = FIIDIIFetcher()
@@ -52,7 +64,7 @@ def export_json_data(output_dir: str = "data") -> bool:
             "stocks": stock_records
         }
 
-        with open(os.path.join(output_dir, "fii_dii.json"), "w", encoding="utf-8") as f:
+        with open(fii_file, "w", encoding="utf-8") as f:
             json.dump(fii_dii_data, f, indent=2)
 
         # 2. Upcoming Dividends
@@ -65,10 +77,10 @@ def export_json_data(output_dir: str = "data") -> bool:
             "dividends": div_records
         }
 
-        with open(os.path.join(output_dir, "dividends.json"), "w", encoding="utf-8") as f:
+        with open(div_file, "w", encoding="utf-8") as f:
             json.dump(dividends_data, f, indent=2)
 
-        print("[Exporter] Successfully exported valid JSON data/fii_dii.json and data/dividends.json")
+        print("[Exporter] Successfully purged old files & exported fresh JSON data/fii_dii.json and data/dividends.json")
         return True
 
     except Exception as e:

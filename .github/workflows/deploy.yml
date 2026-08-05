@@ -33,8 +33,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Fetch Market Data & Generate Static JSON
+      - name: Purge Old Data & Generate Fresh Static JSON
         run: |
+          rm -rf data/*.json
           python generate_data.py
 
       - name: Deploy to GitHub Pages
