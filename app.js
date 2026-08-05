@@ -19,11 +19,16 @@ async function purgeAndReloadData() {
   localStorage.removeItem('stockins8_cache_fii');
   localStorage.removeItem('stockins8_cache_div');
 
-  document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-cyan"></i> Purging cache & fetching latest server dataset...</td></tr>`;
+  document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-cyan"></i> Purging cache & fetching latest market dataset...</td></tr>`;
   document.getElementById('stocks-table-body').innerHTML = `<tr><td colspan="8" class="loading-state"><i class="fa-solid fa-sync fa-spin text-emerald"></i> Refreshing stock shareholdings...</td></tr>`;
   document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-amber"></i> Fetching corporate dividend schedules...</td></tr>`;
 
   await loadData();
+
+  const now = new Date();
+  const dateStr = now.toISOString().split('T')[0];
+  const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+  document.getElementById('last-updated').innerText = `Synced: ${dateStr} ${timeStr}`;
 
   if (syncBtn) {
     syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
