@@ -1,3 +1,3 @@
 """
-Test package for Indian Market Intelligence Framework.
+Test package for StockIns8 Framework.
 """

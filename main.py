@@ -1,5 +1,5 @@
 """
-Unified CLI & Application Entrypoint for Indian Market Intelligence Framework.
+Unified CLI & Application Entrypoint for StockIns8 Framework.
 """
 
 import sys
@@ -14,7 +14,7 @@ from src.utils.exporter import export_json_data
 def run_cli_fii_dii(args):
     fetcher = FIIDIIFetcher()
     if args.daily:
-        print("\nDaily FII / DII Market Activity (Cash Market)\n")
+        print("\n[StockIns8] Daily FII / DII Market Activity (Cash Market)\n")
         df = fetcher.fetch_daily_fii_dii()
         if not df.empty:
             print(df.to_string(index=False))
@@ -22,7 +22,7 @@ def run_cli_fii_dii(args):
             print("No daily activity data found.")
     elif args.stocks:
         symbols = [s.strip() for s in args.stocks.split(",") if s.strip()]
-        print(f"\nShareholding Changes for {len(symbols)} stocks\n")
+        print(f"\n[StockIns8] Shareholding Changes for {len(symbols)} stocks\n")
         df = fetcher.fetch_stocks_shareholding_batch(symbols)
         if not df.empty:
             print(format_dataframe_changes(df).to_string(index=False))
@@ -32,7 +32,7 @@ def run_cli_fii_dii(args):
 
 def run_cli_dividends(args):
     fetcher = DividendFetcher()
-    print(f"\nUpcoming Dividends (Next {args.days} days)\n")
+    print(f"\n[StockIns8] Upcoming Dividends (Next {args.days} days)\n")
     df = fetcher.fetch_upcoming_dividends(days_ahead=args.days, symbol=args.symbol)
     if not df.empty:
         print(df.to_string(index=False))
@@ -41,7 +41,7 @@ def run_cli_dividends(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Indian Financial Intelligence Framework CLI")
+    parser = argparse.ArgumentParser(description="StockIns8 Financial Intelligence Framework CLI")
     subparsers = parser.add_subparsers(dest="command", help="Sub-command to execute")
 
     # CLI sub-command
@@ -66,7 +66,7 @@ def main():
         else:
             run_cli_fii_dii(args)
     elif args.command == "ui":
-        print("Launching Streamlit Web App...")
+        print("Launching StockIns8 Streamlit Web App...")
         subprocess.run([sys.executable, "-m", "streamlit", "run", "src/ui/app.py"])
     elif args.command == "generate":
         export_json_data("data")

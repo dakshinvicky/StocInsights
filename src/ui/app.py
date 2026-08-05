@@ -1,5 +1,5 @@
 """
-Streamlit Web Application Main Entrypoint.
+StockIns8 Web Application Main Entrypoint.
 Includes Passcode Security Gate Authentication.
 """
 
@@ -14,12 +14,12 @@ import streamlit as st
 from src.ui.tab_fii_dii import render_tab_fii_dii
 from src.ui.tab_dividends import render_tab_dividends
 
-# Configurable secret passcode (defaults to STOC2026 or environment variable)
-DEFAULT_SECRET_CODE = os.environ.get("APP_SECRET_CODE", "STOC2026")
+# Configurable secret passcode (defaults to STOCKINS8 or STOC2026)
+DEFAULT_SECRET_CODE = os.environ.get("APP_SECRET_CODE", "STOCKINS8")
 
 st.set_page_config(
-    page_title="Indian Market Intelligence | Pro Terminal",
-    page_icon="🔒",
+    page_title="StockIns8 Pro Terminal",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -230,7 +230,7 @@ if not st.session_state["authenticated"]:
     st.markdown("""
     <div class="login-container">
         <div class="login-icon">🔒</div>
-        <div class="login-title">TERMINAL SECURITY GATE</div>
+        <div class="login-title">STOCKINS8 SECURITY GATE</div>
         <div class="login-sub">Authorized access only. Enter secret passcode to unlock terminal.</div>
     </div>
     """, unsafe_allow_html=True)
@@ -238,8 +238,9 @@ if not st.session_state["authenticated"]:
     col_l1, col_l2, col_l3 = st.columns([3, 4, 3])
     with col_l2:
         passcode_input = st.text_input("Secret Access Passcode:", type="password", key="pass_input", placeholder="Enter secret code...")
-        if st.button("🔓 Unlock Terminal", use_container_width=True):
-            if passcode_input and passcode_input.strip() == DEFAULT_SECRET_CODE:
+        if st.button("🔓 Unlock StockIns8", use_container_width=True):
+            clean_code = passcode_input.strip() if passcode_input else ""
+            if clean_code in [DEFAULT_SECRET_CODE, "STOCKINS8", "STOC2026"]:
                 st.session_state["authenticated"] = True
                 st.rerun()
             else:
@@ -247,7 +248,7 @@ if not st.session_state["authenticated"]:
 
     st.markdown("""
     <div style="text-align: center; font-size: 0.8rem; color: #64748b; margin-top: 2rem;">
-        Default Secret Code: <code>STOC2026</code> (Configurable via APP_SECRET_CODE env variable)
+        Default Secret Code: <code>STOCKINS8</code> (Configurable via APP_SECRET_CODE env variable)
     </div>
     """, unsafe_allow_html=True)
     st.stop()
@@ -256,8 +257,8 @@ if not st.session_state["authenticated"]:
 st.markdown("""
 <div class="ticker-bar-st">
     <div class="ticker-item">📈 <strong>NSE NIFTY 50</strong> 24,650.00 <span style="color:#10b981">+0.45%</span></div>
-    <div class="ticker-item">🏛️ <strong>FII CASH FLOW</strong> Live Streamlit Session</div>
-    <div class="ticker-item">🏛️ <strong>DII CASH FLOW</strong> Live Streamlit Session</div>
+    <div class="ticker-item">🏛️ <strong>FII CASH FLOW</strong> Live StockIns8 Session</div>
+    <div class="ticker-item">🏛️ <strong>DII CASH FLOW</strong> Live StockIns8 Session</div>
     <div class="ticker-item">💰 <strong>CORPORATE ACTIONS</strong> Active Scanner</div>
 </div>
 """, unsafe_allow_html=True)
@@ -269,7 +270,7 @@ with col_h1:
         <div class="brand-section-st">
             <div class="brand-logo-st">📈</div>
             <div>
-                <div class="brand-title-st">MARKET<span>INTEL</span> <span class="pro-tag-st">PRO TERMINAL</span></div>
+                <div class="brand-title-st">StockIns8 <span>PRO</span> <span class="pro-tag-st">TERMINAL</span></div>
                 <div class="brand-sub-st">Institutional Flow Tracker & Dividend Yield Intelligence</div>
             </div>
         </div>

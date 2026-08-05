@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "indian-market-intelligence"
+name = "stockins8"
 version = "1.0.0"
-description = "Live FII/DII Institutional Activity & Upcoming Corporate Dividends Tracker Framework"
+description = "StockIns8 - Live FII/DII Institutional Activity & Corporate Dividend Tracker Framework"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
@@ -16,4 +16,4 @@ dependencies = [
 ]
 
 [project.scripts]
-market-intel = "main:main"
+stockins8 = "main:main"
