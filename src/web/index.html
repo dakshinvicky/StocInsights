@@ -3,23 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Indian Market Intelligence | Professional Institutional & Dividend Terminal</title>
+  <title>Indian Market Intelligence | Security Gate Terminal</title>
   <meta name="description" content="Institutional Market Flow (FII/DII) & Corporate Dividend Intelligence Platform for Indian Equities (NSE).">
   
-  <!-- Premium Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome 6 Pro icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    
-    <!-- Top Live Ticker Bar -->
+
+  <!-- Security Passcode Overlay Gate -->
+  <div id="security-gate-overlay" class="security-overlay active">
+    <div class="security-modal">
+      <div class="security-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2>TERMINAL SECURITY GATE</h2>
+      <p class="security-sub">Authorized access only. Enter secret passcode to unlock terminal.</p>
+      
+      <form onsubmit="handlePasscodeSubmit(event)">
+        <div class="form-group margin-bottom-lg">
+          <input type="password" id="secret-passcode-input" class="form-control text-center font-mono" placeholder="Enter secret code..." required>
+        </div>
+        <div id="passcode-error-msg" class="error-badge hide">❌ Invalid secret code. Access denied.</div>
+        <button type="submit" class="btn btn-cyan btn-full">
+          <i class="fa-solid fa-key"></i> Unlock Terminal
+        </button>
+      </form>
+      <p class="passcode-hint">Default Secret Code: <code>STOC2026</code></p>
+    </div>
+  </div>
+
+  <div class="app-shell blur-protected" id="app-main-shell">
     <div class="ticker-bar">
       <div class="ticker-content" id="ticker-marquee">
         <span class="ticker-item"><i class="fa-solid fa-arrow-trend-up text-emerald"></i> <strong>NSE NIFTY 50</strong> 24,650.00 <span class="badge-emerald">+0.45%</span></span>
@@ -29,7 +46,6 @@
       </div>
     </div>
 
-    <!-- Main Navigation Header -->
     <header class="main-header">
       <div class="brand-section">
         <div class="brand-logo">
@@ -55,10 +71,12 @@
         <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
           <i class="fa-solid fa-moon" id="theme-icon"></i>
         </button>
+        <button class="btn btn-outline" onclick="lockTerminal()" title="Lock Terminal Session">
+          <i class="fa-solid fa-lock text-rose"></i> Lock Terminal
+        </button>
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
     <nav class="nav-tabs">
       <button class="tab-btn active" id="tab-fii-btn" onclick="switchTab('fii')">
         <i class="fa-solid fa-building-columns"></i>
@@ -72,10 +90,7 @@
       </button>
     </nav>
 
-    <!-- TAB 1: FII & DII INSTITUTIONAL ACTIVITY -->
     <main id="tab-fii" class="tab-pane active">
-      
-      <!-- Metrics Overview Cards -->
       <section class="metrics-row">
         <div class="pro-card metric-card border-cyan">
           <div class="metric-head">
@@ -114,7 +129,6 @@
         </div>
       </section>
 
-      <!-- Daily Activity Table Card -->
       <section class="pro-card section-card">
         <div class="card-header">
           <div>
@@ -143,7 +157,6 @@
         </div>
       </section>
 
-      <!-- Stock Shareholding QoQ Table Card -->
       <section class="pro-card section-card">
         <div class="card-header flex-header">
           <div>
@@ -192,10 +205,7 @@
       </section>
     </main>
 
-    <!-- TAB 2: UPCOMING DIVIDENDS -->
     <main id="tab-dividends" class="tab-pane">
-      
-      <!-- Metrics Row -->
       <section class="metrics-row">
         <div class="pro-card metric-card border-amber">
           <div class="metric-head">
@@ -231,7 +241,6 @@
         </div>
       </section>
 
-      <!-- Calculator Controls Panel -->
       <section class="pro-card calculator-panel">
         <div class="calc-header">
           <div>
@@ -260,7 +269,6 @@
         </div>
       </section>
 
-      <!-- Dividends Table Section -->
       <section class="pro-card section-card">
         <div class="card-header">
           <div>
@@ -290,7 +298,6 @@
       </section>
     </main>
 
-    <!-- Footer -->
     <footer class="pro-footer">
       <div class="footer-content">
         <p><strong>MARKETINTEL PRO TERMINAL</strong> • Automated Financial Scraper Engine</p>

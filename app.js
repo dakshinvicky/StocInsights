@@ -1,3 +1,4 @@
+const DEFAULT_SECRET_CODE = 'STOC2026';
 let globalFiiDiiData = { daily: [], stocks: [] };
 let globalDividendsData = [];
 let currentStockFilter = 'all';
@@ -5,6 +6,37 @@ let stockSortCol = 'Stock';
 let stockSortAsc = true;
 let divSortCol = 'stock';
 let divSortAsc = true;
+
+function handlePasscodeSubmit(e) {
+  e.preventDefault();
+  const inputCode = (document.getElementById('secret-passcode-input').value || '').trim();
+  const errorMsg = document.getElementById('passcode-error-msg');
+
+  if (inputCode === DEFAULT_SECRET_CODE) {
+    sessionStorage.setItem('stoc_authenticated', 'true');
+    unlockTerminalUI();
+    if (errorMsg) errorMsg.classList.add('hide');
+  } else {
+    if (errorMsg) errorMsg.classList.remove('hide');
+  }
+}
+
+function unlockTerminalUI() {
+  const overlay = document.getElementById('security-gate-overlay');
+  const mainShell = document.getElementById('app-main-shell');
+  if (overlay) overlay.classList.remove('active');
+  if (mainShell) mainShell.classList.add('unlocked');
+  loadData();
+}
+
+function lockTerminal() {
+  sessionStorage.removeItem('stoc_authenticated');
+  const overlay = document.getElementById('security-gate-overlay');
+  const mainShell = document.getElementById('app-main-shell');
+  if (overlay) overlay.classList.add('active');
+  if (mainShell) mainShell.classList.remove('unlocked');
+  document.getElementById('secret-passcode-input').value = '';
+}
 
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -25,7 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (icon) {
     icon.className = savedTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
   }
-  loadData();
+
+  const isAuth = sessionStorage.getItem('stoc_authenticated');
+  if (isAuth === 'true') {
+    unlockTerminalUI();
+  }
 });
 
 function switchTab(tabName) {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Indian Market Intelligence | Professional Institutional & Dividend Terminal</title>
+  <title>Indian Market Intelligence | Security Gate Terminal</title>
   <meta name="description" content="Institutional Market Flow (FII/DII) & Corporate Dividend Intelligence Platform for Indian Equities (NSE).">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,30 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
+
+  <!-- Security Passcode Overlay Gate -->
+  <div id="security-gate-overlay" class="security-overlay active">
+    <div class="security-modal">
+      <div class="security-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2>TERMINAL SECURITY GATE</h2>
+      <p class="security-sub">Authorized access only. Enter secret passcode to unlock terminal.</p>
+      
+      <form onsubmit="handlePasscodeSubmit(event)">
+        <div class="form-group margin-bottom-lg">
+          <input type="password" id="secret-passcode-input" class="form-control text-center font-mono" placeholder="Enter secret code..." required>
+        </div>
+        <div id="passcode-error-msg" class="error-badge hide">❌ Invalid secret code. Access denied.</div>
+        <button type="submit" class="btn btn-cyan btn-full">
+          <i class="fa-solid fa-key"></i> Unlock Terminal
+        </button>
+      </form>
+      <p class="passcode-hint">Default Secret Code: <code>STOC2026</code></p>
+    </div>
+  </div>
+
+  <div class="app-shell blur-protected" id="app-main-shell">
     <div class="ticker-bar">
       <div class="ticker-content" id="ticker-marquee">
         <span class="ticker-item"><i class="fa-solid fa-arrow-trend-up text-emerald"></i> <strong>NSE NIFTY 50</strong> 24,650.00 <span class="badge-emerald">+0.45%</span></span>
@@ -47,6 +70,9 @@
         </div>
         <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
           <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+        <button class="btn btn-outline" onclick="lockTerminal()" title="Lock Terminal Session">
+          <i class="fa-solid fa-lock text-rose"></i> Lock Terminal
         </button>
       </div>
     </header>

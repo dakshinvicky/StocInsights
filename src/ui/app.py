@@ -1,6 +1,6 @@
 """
 Streamlit Web Application Main Entrypoint.
-Matches 1-to-1 with the Professional Terminal Web UI layout.
+Includes Passcode Security Gate Authentication.
 """
 
 import sys
@@ -14,19 +14,21 @@ import streamlit as st
 from src.ui.tab_fii_dii import render_tab_fii_dii
 from src.ui.tab_dividends import render_tab_dividends
 
+# Configurable secret passcode (defaults to STOC2026 or environment variable)
+DEFAULT_SECRET_CODE = os.environ.get("APP_SECRET_CODE", "STOC2026")
+
 st.set_page_config(
     page_title="Indian Market Intelligence | Pro Terminal",
-    page_icon="⚡",
+    page_icon="🔒",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Full CSS styling matching index.html / styles.css
+# Global CSS styling
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global theme */
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
     }
@@ -34,6 +36,48 @@ st.markdown("""
     .stApp {
         background-color: #090d16 !important;
         color: #f8fafc !important;
+    }
+
+    /* Security Gate Login Box */
+    .login-container {
+        max-width: 440px;
+        margin: 4rem auto;
+        background: rgba(18, 25, 41, 0.9);
+        backdrop-filter: blur(20px);
+        border: 1px solid #1e293b;
+        border-top: 4px solid #38bdf8;
+        padding: 2.5rem 2rem;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        text-align: center;
+    }
+
+    .login-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #ffffff;
+        margin: 0 auto 1.5rem auto;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #f8fafc;
+        margin-bottom: 0.4rem;
+        letter-spacing: -0.02em;
+    }
+
+    .login-sub {
+        font-size: 0.875rem;
+        color: #94a3b8;
+        margin-bottom: 1.5rem;
     }
 
     /* Top Ticker Bar */
@@ -110,18 +154,6 @@ st.markdown("""
         font-size: 0.875rem;
         color: #94a3b8;
     }
-    .status-indicator-st {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: rgba(16, 185, 129, 0.12);
-        color: #10b981;
-        padding: 0.4rem 0.85rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-    }
 
     /* Metric Cards Custom HTML/CSS */
     .pro-metric-card {
@@ -181,34 +213,76 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25) !important;
     }
 
-    /* Streamlit Dataframe Custom Styling */
     .stDataFrame {
         border-radius: 12px;
         border: 1px solid #1e293b;
         overflow: hidden;
     }
 </style>
+""", unsafe_allow_html=True)
 
+# Session state initialization for authentication
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+# Security Gate Screen if unauthenticated
+if not st.session_state["authenticated"]:
+    st.markdown("""
+    <div class="login-container">
+        <div class="login-icon">🔒</div>
+        <div class="login-title">TERMINAL SECURITY GATE</div>
+        <div class="login-sub">Authorized access only. Enter secret passcode to unlock terminal.</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col_l1, col_l2, col_l3 = st.columns([3, 4, 3])
+    with col_l2:
+        passcode_input = st.text_input("Secret Access Passcode:", type="password", key="pass_input", placeholder="Enter secret code...")
+        if st.button("🔓 Unlock Terminal", use_container_width=True):
+            if passcode_input and passcode_input.strip() == DEFAULT_SECRET_CODE:
+                st.session_state["authenticated"] = True
+                st.rerun()
+            else:
+                st.error("❌ Invalid secret passcode! Access denied.")
+
+    st.markdown("""
+    <div style="text-align: center; font-size: 0.8rem; color: #64748b; margin-top: 2rem;">
+        Default Secret Code: <code>STOC2026</code> (Configurable via APP_SECRET_CODE env variable)
+    </div>
+    """, unsafe_allow_html=True)
+    st.stop()
+
+# Authenticated Terminal Layout
+st.markdown("""
 <div class="ticker-bar-st">
     <div class="ticker-item">📈 <strong>NSE NIFTY 50</strong> 24,650.00 <span style="color:#10b981">+0.45%</span></div>
     <div class="ticker-item">🏛️ <strong>FII CASH FLOW</strong> Live Streamlit Session</div>
     <div class="ticker-item">🏛️ <strong>DII CASH FLOW</strong> Live Streamlit Session</div>
     <div class="ticker-item">💰 <strong>CORPORATE ACTIONS</strong> Active Scanner</div>
 </div>
+""", unsafe_allow_html=True)
 
-<div class="main-header-st">
-    <div class="brand-section-st">
-        <div class="brand-logo-st">📈</div>
-        <div>
-            <div class="brand-title-st">MARKET<span>INTEL</span> <span class="pro-tag-st">PRO TERMINAL</span></div>
-            <div class="brand-sub-st">Institutional Flow Tracker & Dividend Yield Intelligence</div>
+col_h1, col_h2 = st.columns([10, 2])
+with col_h1:
+    st.markdown("""
+    <div class="main-header-st">
+        <div class="brand-section-st">
+            <div class="brand-logo-st">📈</div>
+            <div>
+                <div class="brand-title-st">MARKET<span>INTEL</span> <span class="pro-tag-st">PRO TERMINAL</span></div>
+                <div class="brand-sub-st">Institutional Flow Tracker & Dividend Yield Intelligence</div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <div class="status-indicator-st">🟢 NSE Market Live</div>
         </div>
     </div>
-    <div class="status-indicator-st">
-        🟢 NSE Market Live
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+
+with col_h2:
+    if st.button("🔒 Lock Terminal", key="btn_logout"):
+        st.session_state["authenticated"] = False
+        st.rerun()
 
 tab1, tab2 = st.tabs(["🏛️ FII & DII Institutional Activity", "💰 Upcoming Corporate Dividends"])
 

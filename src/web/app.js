@@ -1,5 +1,6 @@
-// MARKETINTEL PRO TERMINAL - Client Logic
+// MARKETINTEL PRO TERMINAL - Client Logic & Security Gate
 
+const DEFAULT_SECRET_CODE = 'STOC2026';
 let globalFiiDiiData = { daily: [], stocks: [] };
 let globalDividendsData = [];
 let currentStockFilter = 'all';
@@ -7,6 +8,38 @@ let stockSortCol = 'Stock';
 let stockSortAsc = true;
 let divSortCol = 'stock';
 let divSortAsc = true;
+
+// Authentication Handlers
+function handlePasscodeSubmit(e) {
+  e.preventDefault();
+  const inputCode = (document.getElementById('secret-passcode-input').value || '').trim();
+  const errorMsg = document.getElementById('passcode-error-msg');
+
+  if (inputCode === DEFAULT_SECRET_CODE) {
+    sessionStorage.setItem('stoc_authenticated', 'true');
+    unlockTerminalUI();
+    if (errorMsg) errorMsg.classList.add('hide');
+  } else {
+    if (errorMsg) errorMsg.classList.remove('hide');
+  }
+}
+
+function unlockTerminalUI() {
+  const overlay = document.getElementById('security-gate-overlay');
+  const mainShell = document.getElementById('app-main-shell');
+  if (overlay) overlay.classList.remove('active');
+  if (mainShell) mainShell.classList.add('unlocked');
+  loadData();
+}
+
+function lockTerminal() {
+  sessionStorage.removeItem('stoc_authenticated');
+  const overlay = document.getElementById('security-gate-overlay');
+  const mainShell = document.getElementById('app-main-shell');
+  if (overlay) overlay.classList.add('active');
+  if (mainShell) mainShell.classList.remove('unlocked');
+  document.getElementById('secret-passcode-input').value = '';
+}
 
 // Theme Switcher
 function toggleTheme() {
@@ -21,7 +54,7 @@ function toggleTheme() {
   }
 }
 
-// Restore stored theme
+// Initialization
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
@@ -29,10 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (icon) {
     icon.className = savedTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
   }
-  loadData();
+
+  // Check auth session
+  const isAuth = sessionStorage.getItem('stoc_authenticated');
+  if (isAuth === 'true') {
+    unlockTerminalUI();
+  }
 });
 
-// Tab Switcher
 function switchTab(tabName) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
@@ -46,7 +83,6 @@ function switchTab(tabName) {
   }
 }
 
-// Capital Presets for Dividend Calculator
 function setCapitalPreset(amount) {
   document.querySelectorAll('.btn-preset').forEach(btn => btn.classList.remove('active'));
   event.target.classList.add('active');
@@ -54,13 +90,11 @@ function setCapitalPreset(amount) {
   renderDividendsTable();
 }
 
-// Formatting helpers
 function formatNumber(val, decimals = 2) {
   if (val === null || val === undefined || isNaN(val)) return 'N/A';
   return parseFloat(val).toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 
-// Load static JSON datasets
 async function loadData() {
   try {
     const fiiRes = await fetch('data/fii_dii.json');
@@ -89,7 +123,6 @@ async function loadData() {
   }
 }
 
-// Render FII & DII Section
 function renderFiiDiiSection() {
   const daily = globalFiiDiiData.daily || [];
 
@@ -102,11 +135,9 @@ function renderFiiDiiSection() {
     if (cat.includes('DII')) diiNet = val;
   });
 
-  // Ticker marquee updates
   document.getElementById('ticker-fii').innerHTML = `<span class="${fiiNet >= 0 ? 'text-emerald' : 'text-rose'}">₹ ${formatNumber(fiiNet)} Cr</span>`;
   document.getElementById('ticker-dii').innerHTML = `<span class="${diiNet >= 0 ? 'text-emerald' : 'text-rose'}">₹ ${formatNumber(diiNet)} Cr</span>`;
 
-  // Hero Card values
   const fiiElem = document.getElementById('fii-net-val');
   fiiElem.innerText = `₹ ${formatNumber(fiiNet)} Cr`;
   fiiElem.className = `metric-amount ${fiiNet >= 0 ? 'text-emerald' : 'text-rose'}`;
@@ -134,7 +165,6 @@ function renderFiiDiiSection() {
     sentBadge.className = 'sentiment-badge badge-rose';
   }
 
-  // Daily Table
   const dailyBody = document.getElementById('daily-table-body');
   if (daily.length > 0) {
     dailyBody.innerHTML = daily.map(row => {
@@ -238,7 +268,6 @@ function renderStockTable() {
   }
 }
 
-// Render Dividends Section
 function sortDividendsTable(colName) {
   if (divSortCol === colName) {
     divSortAsc = !divSortAsc;
@@ -271,7 +300,6 @@ function renderDividendsTable() {
     return !searchInput || sym.includes(searchInput);
   });
 
-  // Ticker marquee & Count badge
   document.getElementById('ticker-div').innerText = `${filtered.length} Announced Actions`;
   document.getElementById('div-count-badge').innerText = filtered.length;
   document.getElementById('div-count-val').innerText = filtered.length;
@@ -310,7 +338,6 @@ function renderDividendsTable() {
   }
 }
 
-// CSV Export Utility
 function exportTableToCSV(tableId, filename) {
   const table = document.getElementById(tableId);
   const rows = Array.from(table.querySelectorAll('tr'));
