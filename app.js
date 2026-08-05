@@ -73,6 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadLiveAPIData();
+// Set timestamp after initial load
+const nowInit = new Date();
+const dateStrInit = nowInit.toISOString().split('T')[0];
+const timeStrInit = nowInit.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+document.getElementById('last-updated').innerText = `Live API Synced: ${dateStrInit} ${timeStrInit}`;
 });
 
 function switchTab(tabName) {
@@ -166,7 +171,7 @@ async function loadLiveAPIData() {
       stocks: stockRecords
     };
 
-    document.getElementById('last-updated').innerText = `Live API Synced: ${dateStr} ${timeStr}`;
+    
     renderFiiDiiSection();
 
   } catch (err) {

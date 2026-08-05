@@ -14,23 +14,7 @@ const SAMPLE_STOCKS = [
 ];
 
 // Live On-Demand API Fetching
-async function purgeAndReloadData() {
-  const syncBtn = document.querySelector('.header-actions .btn-cyan');
-  if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> SYNCING LIVE API...`;
-    syncBtn.disabled = true;
-  }
 
-
-
-  if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
-    setTimeout(() => {
-      syncBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> LIVE SYNC & RELOAD`;
-      syncBtn.disabled = false;
-    }, 2000);
-  }
-}
 
 // Theme Switcher
 function toggleTheme() {
@@ -158,7 +142,7 @@ async function loadLiveAPIData() {
     globalFiiDiiData = newData;
     // Update timestamp only if data changed
     if (dataChanged) {
-      document.getElementById('last-updated').innerText = `Live API Synced: ${dateStr} ${timeStr}`;
+
     }
     renderFiiDiiSection();
 
