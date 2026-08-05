@@ -41,6 +41,39 @@ function lockTerminal() {
   document.getElementById('secret-passcode-input').value = '';
 }
 
+// On-Demand Purge & Reload Data
+async function purgeAndReloadData() {
+  const syncBtn = document.querySelector('.header-actions .btn-cyan');
+  if (syncBtn) {
+    syncBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Syncing Live Data...`;
+    syncBtn.disabled = true;
+  }
+
+  // Clear in-memory datasets
+  globalFiiDiiData = { daily: [], stocks: [] };
+  globalDividendsData = [];
+
+  // Clear caches
+  localStorage.removeItem('stockins8_cache_fii');
+  localStorage.removeItem('stockins8_cache_div');
+
+  // Show loading indicators
+  document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-cyan"></i> Purging cache & reloading live NSE data...</td></tr>`;
+  document.getElementById('stocks-table-body').innerHTML = `<tr><td colspan="8" class="loading-state"><i class="fa-solid fa-sync fa-spin text-emerald"></i> Refreshing stock shareholdings...</td></tr>`;
+  document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-amber"></i> Fetching corporate dividend schedules...</td></tr>`;
+
+  // Fetch with cache-busting timestamp
+  await loadData();
+
+  if (syncBtn) {
+    syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> Synced!`;
+    setTimeout(() => {
+      syncBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> Live Sync & Reload`;
+      syncBtn.disabled = false;
+    }, 2000);
+  }
+}
+
 // Theme Switcher
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
@@ -94,27 +127,11 @@ function formatNumber(val, decimals = 2) {
   return parseFloat(val).toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 
-// Fetch Client-side Live CMP from Yahoo Finance
-async function fetchLiveCMP(symbol) {
-  try {
-    const cleanSym = symbol.trim().toUpperCase();
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${cleanSym}.NS?interval=1d`;
-    const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
-    if (res.ok) {
-      const data = await res.json();
-      const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
-      if (price) return price;
-    }
-  } catch (e) {
-    console.debug('Live CMP fetch fallback:', e);
-  }
-  return null;
-}
-
 // Load static JSON datasets & refresh live prices
 async function loadData() {
+  const timestamp = Date.now();
   try {
-    const fiiRes = await fetch('data/fii_dii.json?t=' + Date.now());
+    const fiiRes = await fetch(`data/fii_dii.json?sync=true&t=${timestamp}`);
     if (fiiRes.ok) {
       globalFiiDiiData = await fiiRes.json();
       if (globalFiiDiiData.updated_at) {
@@ -124,11 +141,11 @@ async function loadData() {
     }
   } catch (err) {
     console.warn('Could not load fii_dii.json:', err);
-    document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">No static data found. Run <code>python main.py generate</code> or wait for GitHub Actions.</td></tr>`;
+    document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">No static data found. Run <code>python main.py generate</code> or click Live Sync.</td></tr>`;
   }
 
   try {
-    const divRes = await fetch('data/dividends.json?t=' + Date.now());
+    const divRes = await fetch(`data/dividends.json?sync=true&t=${timestamp}`);
     if (divRes.ok) {
       const divJson = await divRes.json();
       globalDividendsData = divJson.dividends || [];
@@ -136,7 +153,7 @@ async function loadData() {
     }
   } catch (err) {
     console.warn('Could not load dividends.json:', err);
-    document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">No static dividend data found. Run <code>python main.py generate</code> or wait for GitHub Actions.</td></tr>`;
+    document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">No static dividend data found. Run <code>python main.py generate</code> or click Live Sync.</td></tr>`;
   }
 }
 

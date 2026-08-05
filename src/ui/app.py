@@ -1,6 +1,6 @@
 """
 StockIns8 Web Application Main Entrypoint.
-Includes Passcode Security Gate Authentication.
+Includes Passcode Security Gate Authentication & On-Demand Live Sync Engine.
 """
 
 import sys
@@ -263,7 +263,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-col_h1, col_h2 = st.columns([10, 2])
+col_h1, col_h2, col_h3 = st.columns([8, 2, 2])
 with col_h1:
     st.markdown("""
     <div class="main-header-st">
@@ -281,7 +281,13 @@ with col_h1:
     """, unsafe_allow_html=True)
 
 with col_h2:
-    if st.button("🔒 Lock Terminal", key="btn_logout"):
+    if st.button("⚡ Live Sync & Reload", key="btn_sync_all", use_container_width=True):
+        st.cache_data.clear()
+        st.toast("⚡ Cleared cache & re-fetching live market data...", icon="🚀")
+        st.rerun()
+
+with col_h3:
+    if st.button("🔒 Lock Terminal", key="btn_logout", use_container_width=True):
         st.session_state["authenticated"] = False
         st.rerun()
 
