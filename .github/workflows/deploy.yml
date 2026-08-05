@@ -2,7 +2,9 @@ name: Build & Deploy GitHub Pages Dashboard
 
 on:
   schedule:
-    # Run daily at 01:00 AM UTC (06:30 AM IST)
+    # Run every 30 minutes during Indian Stock Market hours (03:30 UTC to 10:30 UTC / 9:00 AM to 4:00 PM IST Monday to Friday)
+    - cron: '*/30 3-10 * * 1-5'
+    # Also run daily at 01:00 UTC
     - cron: '0 1 * * *'
   workflow_dispatch:
   push:

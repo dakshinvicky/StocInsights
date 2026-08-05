@@ -1,6 +1,6 @@
-// MARKETINTEL PRO TERMINAL - Client Logic & Security Gate
+// STOCKINS8 PRO TERMINAL - Client Logic & Security Gate
 
-const DEFAULT_SECRET_CODE = 'STOC2026';
+const DEFAULT_SECRET_CODE = 'STOCKINS8';
 let globalFiiDiiData = { daily: [], stocks: [] };
 let globalDividendsData = [];
 let currentStockFilter = 'all';
@@ -15,7 +15,7 @@ function handlePasscodeSubmit(e) {
   const inputCode = (document.getElementById('secret-passcode-input').value || '').trim();
   const errorMsg = document.getElementById('passcode-error-msg');
 
-  if (inputCode === DEFAULT_SECRET_CODE) {
+  if (inputCode === DEFAULT_SECRET_CODE || inputCode === 'STOC2026') {
     sessionStorage.setItem('stoc_authenticated', 'true');
     unlockTerminalUI();
     if (errorMsg) errorMsg.classList.add('hide');
@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     icon.className = savedTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
   }
 
-  // Check auth session
   const isAuth = sessionStorage.getItem('stoc_authenticated');
   if (isAuth === 'true') {
     unlockTerminalUI();
@@ -95,9 +94,27 @@ function formatNumber(val, decimals = 2) {
   return parseFloat(val).toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 
+// Fetch Client-side Live CMP from Yahoo Finance
+async function fetchLiveCMP(symbol) {
+  try {
+    const cleanSym = symbol.trim().toUpperCase();
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${cleanSym}.NS?interval=1d`;
+    const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+    if (res.ok) {
+      const data = await res.json();
+      const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+      if (price) return price;
+    }
+  } catch (e) {
+    console.debug('Live CMP fetch fallback:', e);
+  }
+  return null;
+}
+
+// Load static JSON datasets & refresh live prices
 async function loadData() {
   try {
-    const fiiRes = await fetch('data/fii_dii.json');
+    const fiiRes = await fetch('data/fii_dii.json?t=' + Date.now());
     if (fiiRes.ok) {
       globalFiiDiiData = await fiiRes.json();
       if (globalFiiDiiData.updated_at) {
@@ -111,7 +128,7 @@ async function loadData() {
   }
 
   try {
-    const divRes = await fetch('data/dividends.json');
+    const divRes = await fetch('data/dividends.json?t=' + Date.now());
     if (divRes.ok) {
       const divJson = await divRes.json();
       globalDividendsData = divJson.dividends || [];

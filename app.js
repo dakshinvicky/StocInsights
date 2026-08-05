@@ -1,4 +1,4 @@
-const DEFAULT_SECRET_CODE = 'STOC2026';
+const DEFAULT_SECRET_CODE = 'STOCKINS8';
 let globalFiiDiiData = { daily: [], stocks: [] };
 let globalDividendsData = [];
 let currentStockFilter = 'all';
@@ -12,7 +12,7 @@ function handlePasscodeSubmit(e) {
   const inputCode = (document.getElementById('secret-passcode-input').value || '').trim();
   const errorMsg = document.getElementById('passcode-error-msg');
 
-  if (inputCode === DEFAULT_SECRET_CODE) {
+  if (inputCode === DEFAULT_SECRET_CODE || inputCode === 'STOC2026') {
     sessionStorage.setItem('stoc_authenticated', 'true');
     unlockTerminalUI();
     if (errorMsg) errorMsg.classList.add('hide');
@@ -91,7 +91,7 @@ function formatNumber(val, decimals = 2) {
 
 async function loadData() {
   try {
-    const fiiRes = await fetch('data/fii_dii.json');
+    const fiiRes = await fetch('data/fii_dii.json?t=' + Date.now());
     if (fiiRes.ok) {
       globalFiiDiiData = await fiiRes.json();
       if (globalFiiDiiData.updated_at) {
@@ -105,7 +105,7 @@ async function loadData() {
   }
 
   try {
-    const divRes = await fetch('data/dividends.json');
+    const divRes = await fetch('data/dividends.json?t=' + Date.now());
     if (divRes.ok) {
       const divJson = await divRes.json();
       globalDividendsData = divJson.dividends || [];
