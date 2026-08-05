@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-05 20:34:29 IST",
+  "updated_at": "2026-08-05 20:35:26 IST",
   "daily": [
     {
       "Category": "DII",
@@ -18,34 +18,6 @@
   ],
   "stocks": [
     {
-      "Stock": "NTPC",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 16.3,
-      "FII Prev (%)": 16.54,
-      "FII QoQ Change (%)": -0.24,
-      "DII (%)": 29.44,
-      "DII Prev (%)": 29.13,
-      "DII QoQ Change (%)": 0.31,
-      "Promoter (%)": 51.1,
-      "Public (%)": 3.14,
-      "CMP": 349.9
-    },
-    {
-      "Stock": "HDFCBANK",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 41.82,
-      "FII Prev (%)": 44.05,
-      "FII QoQ Change (%)": -2.23,
-      "DII (%)": 41.75,
-      "DII Prev (%)": 40.14,
-      "DII QoQ Change (%)": 1.61,
-      "Promoter (%)": 0.0,
-      "Public (%)": 16.27,
-      "CMP": 735.0
-    },
-    {
       "Stock": "ITC",
       "Latest Quarter": "Jun 2026",
       "Prev Quarter": "Mar 2026",
@@ -58,6 +30,34 @@
       "Promoter (%)": 0.0,
       "Public (%)": 16.61,
       "CMP": 286.95
+    },
+    {
+      "Stock": "MARUTI",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 12.82,
+      "FII Prev (%)": 14.12,
+      "FII QoQ Change (%)": -1.3,
+      "DII (%)": 25.09,
+      "DII Prev (%)": 24.09,
+      "DII QoQ Change (%)": 1.0,
+      "Promoter (%)": 58.65,
+      "Public (%)": 3.35,
+      "CMP": 14190.0
+    },
+    {
+      "Stock": "POWERGRID",
+      "Latest Quarter": "N/A",
+      "Prev Quarter": "N/A",
+      "FII (%)": null,
+      "FII Prev (%)": null,
+      "FII QoQ Change (%)": null,
+      "DII (%)": null,
+      "DII Prev (%)": null,
+      "DII QoQ Change (%)": null,
+      "Promoter (%)": null,
+      "Public (%)": null,
+      "CMP": 281.75
     },
     {
       "Stock": "ICICIBANK",
@@ -88,34 +88,6 @@
       "CMP": 1940.0
     },
     {
-      "Stock": "MARUTI",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 12.82,
-      "FII Prev (%)": 14.12,
-      "FII QoQ Change (%)": -1.3,
-      "DII (%)": 25.09,
-      "DII Prev (%)": 24.09,
-      "DII QoQ Change (%)": 1.0,
-      "Promoter (%)": 58.65,
-      "Public (%)": 3.35,
-      "CMP": 14190.0
-    },
-    {
-      "Stock": "ONGC",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 8.01,
-      "FII Prev (%)": 7.97,
-      "FII QoQ Change (%)": 0.04,
-      "DII (%)": 19.31,
-      "DII Prev (%)": 19.3,
-      "DII QoQ Change (%)": 0.01,
-      "Promoter (%)": 58.89,
-      "Public (%)": 3.5,
-      "CMP": 240.2
-    },
-    {
       "Stock": "AXISBANK",
       "Latest Quarter": "Jun 2026",
       "Prev Quarter": "Mar 2026",
@@ -130,46 +102,18 @@
       "CMP": 1253.9
     },
     {
-      "Stock": "M&M",
-      "Latest Quarter": "N/A",
-      "Prev Quarter": "N/A",
-      "FII (%)": null,
-      "FII Prev (%)": null,
-      "FII QoQ Change (%)": null,
-      "DII (%)": null,
-      "DII Prev (%)": null,
-      "DII QoQ Change (%)": null,
-      "Promoter (%)": null,
-      "Public (%)": null,
-      "CMP": 3455.4
-    },
-    {
-      "Stock": "TCS",
+      "Stock": "HDFCBANK",
       "Latest Quarter": "Jun 2026",
       "Prev Quarter": "Mar 2026",
-      "FII (%)": 9.07,
-      "FII Prev (%)": 9.66,
-      "FII QoQ Change (%)": -0.59,
-      "DII (%)": 13.41,
-      "DII Prev (%)": 13.34,
-      "DII QoQ Change (%)": 0.07,
-      "Promoter (%)": 71.77,
-      "Public (%)": 5.69,
-      "CMP": 2413.0
-    },
-    {
-      "Stock": "POWERGRID",
-      "Latest Quarter": "N/A",
-      "Prev Quarter": "N/A",
-      "FII (%)": null,
-      "FII Prev (%)": null,
-      "FII QoQ Change (%)": null,
-      "DII (%)": null,
-      "DII Prev (%)": null,
-      "DII QoQ Change (%)": null,
-      "Promoter (%)": null,
-      "Public (%)": null,
-      "CMP": 281.75
+      "FII (%)": 41.82,
+      "FII Prev (%)": 44.05,
+      "FII QoQ Change (%)": -2.23,
+      "DII (%)": 41.75,
+      "DII Prev (%)": 40.14,
+      "DII QoQ Change (%)": 1.61,
+      "Promoter (%)": 0.0,
+      "Public (%)": 16.27,
+      "CMP": 735.0
     },
     {
       "Stock": "TITAN",
@@ -186,32 +130,18 @@
       "CMP": 4912.4
     },
     {
-      "Stock": "RELIANCE",
+      "Stock": "TCS",
       "Latest Quarter": "Jun 2026",
       "Prev Quarter": "Mar 2026",
-      "FII (%)": 17.19,
-      "FII Prev (%)": 18.67,
-      "FII QoQ Change (%)": -1.48,
-      "DII (%)": 21.1,
-      "DII Prev (%)": 20.46,
-      "DII QoQ Change (%)": 0.64,
-      "Promoter (%)": 50.48,
-      "Public (%)": 11.05,
-      "CMP": 1280.0
-    },
-    {
-      "Stock": "INFY",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 27.09,
-      "FII Prev (%)": 28.45,
-      "FII QoQ Change (%)": -1.36,
-      "DII (%)": 42.78,
-      "DII Prev (%)": 43.19,
-      "DII QoQ Change (%)": -0.41,
-      "Promoter (%)": 13.82,
-      "Public (%)": 15.88,
-      "CMP": 1174.0
+      "FII (%)": 9.07,
+      "FII Prev (%)": 9.66,
+      "FII QoQ Change (%)": -0.59,
+      "DII (%)": 13.41,
+      "DII Prev (%)": 13.34,
+      "DII QoQ Change (%)": 0.07,
+      "Promoter (%)": 71.77,
+      "Public (%)": 5.69,
+      "CMP": 2413.0
     },
     {
       "Stock": "SBIN",
@@ -228,7 +158,77 @@
       "CMP": 1055.0
     },
     {
+      "Stock": "ONGC",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 8.01,
+      "FII Prev (%)": 7.97,
+      "FII QoQ Change (%)": 0.04,
+      "DII (%)": 19.31,
+      "DII Prev (%)": 19.3,
+      "DII QoQ Change (%)": 0.01,
+      "Promoter (%)": 58.89,
+      "Public (%)": 3.5,
+      "CMP": 240.2
+    },
+    {
       "Stock": "BHARTIARTL",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 26.48,
+      "FII Prev (%)": 27.79,
+      "FII QoQ Change (%)": -1.31,
+      "DII (%)": 20.64,
+      "DII Prev (%)": 20.53,
+      "DII QoQ Change (%)": 0.11,
+      "Promoter (%)": 50.07,
+      "Public (%)": 2.64,
+      "CMP": 1978.0
+    },
+    {
+      "Stock": "RELIANCE",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 17.19,
+      "FII Prev (%)": 18.67,
+      "FII QoQ Change (%)": -1.48,
+      "DII (%)": 21.1,
+      "DII Prev (%)": 20.46,
+      "DII QoQ Change (%)": 0.64,
+      "Promoter (%)": 50.48,
+      "Public (%)": 11.05,
+      "CMP": 1280.0
+    },
+    {
+      "Stock": "NTPC",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 16.3,
+      "FII Prev (%)": 16.54,
+      "FII QoQ Change (%)": -0.24,
+      "DII (%)": 29.44,
+      "DII Prev (%)": 29.13,
+      "DII QoQ Change (%)": 0.31,
+      "Promoter (%)": 51.1,
+      "Public (%)": 3.14,
+      "CMP": 349.9
+    },
+    {
+      "Stock": "INFY",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 27.09,
+      "FII Prev (%)": 28.45,
+      "FII QoQ Change (%)": -1.36,
+      "DII (%)": 42.78,
+      "DII Prev (%)": 43.19,
+      "DII QoQ Change (%)": -0.41,
+      "Promoter (%)": 13.82,
+      "Public (%)": 15.88,
+      "CMP": 1174.0
+    },
+    {
+      "Stock": "M&M",
       "Latest Quarter": "N/A",
       "Prev Quarter": "N/A",
       "FII (%)": null,
@@ -239,7 +239,7 @@
       "DII QoQ Change (%)": null,
       "Promoter (%)": null,
       "Public (%)": null,
-      "CMP": 1978.0
+      "CMP": 3455.4
     }
   ]
 }
