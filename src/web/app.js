@@ -91,7 +91,7 @@ function formatNumber(val, decimals = 2) {
   return parseFloat(val).toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 
-// Load static JSON datasets
+// Load static JSON datasets with explicit missing-file handling
 async function loadData() {
   const timestamp = Date.now();
   try {
@@ -102,10 +102,15 @@ async function loadData() {
         document.getElementById('last-updated').innerText = `Synced: ${globalFiiDiiData.updated_at}`;
       }
       renderFiiDiiSection();
+    } else {
+      document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">⚠️ JSON dataset file missing or deleted. Run <code>python generate_data.py</code> or wait for GitHub Actions deployment.</td></tr>`;
+      document.getElementById('stocks-table-body').innerHTML = `<tr><td colspan="8" class="loading-state">⚠️ JSON dataset file missing or deleted.</td></tr>`;
+      document.getElementById('last-updated').innerText = `Dataset missing (404)`;
     }
   } catch (err) {
     console.warn('Could not load fii_dii.json:', err);
-    document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">No static data found. Run <code>python main.py generate</code> or click Live Sync.</td></tr>`;
+    document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">⚠️ Static dataset error. Run <code>python generate_data.py</code> or click Live Sync.</td></tr>`;
+    document.getElementById('stocks-table-body').innerHTML = `<tr><td colspan="8" class="loading-state">⚠️ Static dataset error.</td></tr>`;
   }
 
   try {
@@ -114,10 +119,12 @@ async function loadData() {
       const divJson = await divRes.json();
       globalDividendsData = divJson.dividends || [];
       renderDividendsTable();
+    } else {
+      document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">⚠️ Dividend dataset file missing or deleted. Run <code>python generate_data.py</code> or wait for GitHub Actions.</td></tr>`;
     }
   } catch (err) {
     console.warn('Could not load dividends.json:', err);
-    document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">No static dividend data found. Run <code>python main.py generate</code> or click Live Sync.</td></tr>`;
+    document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state">⚠️ Static dividend dataset error. Run <code>python generate_data.py</code> or click Live Sync.</td></tr>`;
   }
 }
 
