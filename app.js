@@ -18,19 +18,30 @@ async function purgeAndReloadData() {
     syncBtn.disabled = true;
   }
 
+  // Preserve old data for comparison
+  const oldData = { daily: globalFiiDiiData?.daily || [], stocks: globalFiiDiiData?.stocks || [] };
+
+  // Clear in-memory state
   globalFiiDiiData = { daily: [], stocks: [] };
   globalDividendsData = [];
 
+  // Show loading state
   document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-cyan"></i> Fetching live NSE market data from API...</td></tr>`;
   document.getElementById('stocks-table-body').innerHTML = `<tr><td colspan="8" class="loading-state"><i class="fa-solid fa-sync fa-spin text-emerald"></i> Scraping live stock prices from Yahoo Finance...</td></tr>`;
   document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-amber"></i> Fetching live corporate dividend schedules...</td></tr>`;
 
   await loadLiveAPIData();
 
-  const now = new Date();
-  const dateStr = now.toISOString().split('T')[0];
-  const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
-  document.getElementById('last-updated').innerText = `Live API Synced: ${dateStr} ${timeStr}`;
+  // Determine if data changed
+  const dataChanged = JSON.stringify(oldData.daily) !== JSON.stringify(globalFiiDiiData.daily) ||
+                      JSON.stringify(oldData.stocks) !== JSON.stringify(globalFiiDiiData.stocks);
+
+  if (dataChanged) {
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0];
+    const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+    document.getElementById('last-updated').innerText = `Live API Synced: ${dateStr} ${timeStr}`;
+  }
 
   if (syncBtn) {
     syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
@@ -62,6 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadLiveAPIData();
+// Set timestamp after initial load
+const nowInit = new Date();
+const dateStrInit = nowInit.toISOString().split('T')[0];
+const timeStrInit = nowInit.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+document.getElementById('last-updated').innerText = `Live API Synced: ${dateStrInit} ${timeStrInit}`;
 });
 
 function switchTab(tabName) {
@@ -155,7 +171,7 @@ async function loadLiveAPIData() {
       stocks: stockRecords
     };
 
-    document.getElementById('last-updated').innerText = `Live API Synced: ${dateStr} ${timeStr}`;
+    
     renderFiiDiiSection();
 
   } catch (err) {

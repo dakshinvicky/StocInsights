@@ -14,38 +14,7 @@ const SAMPLE_STOCKS = [
 ];
 
 // Live On-Demand API Fetching
-async function purgeAndReloadData() {
-  const syncBtn = document.querySelector('.header-actions .btn-cyan');
-  if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> SYNCING LIVE API...`;
-    syncBtn.disabled = true;
-  }
 
-  // Clear in-memory state
-  globalFiiDiiData = { daily: [], stocks: [] };
-  globalDividendsData = [];
-
-  // Show loading state
-  document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-cyan"></i> Fetching live NSE market data from API...</td></tr>`;
-  document.getElementById('stocks-table-body').innerHTML = `<tr><td colspan="8" class="loading-state"><i class="fa-solid fa-sync fa-spin text-emerald"></i> Scraping live stock prices from Yahoo Finance...</td></tr>`;
-  document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-amber"></i> Fetching live corporate dividend schedules...</td></tr>`;
-
-  // Fetch 100% Live API data
-  await loadLiveAPIData();
-
-  const now = new Date();
-  const dateStr = now.toISOString().split('T')[0];
-  const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
-  document.getElementById('last-updated').innerText = `Live API Synced: ${dateStr} ${timeStr}`;
-
-  if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
-    setTimeout(() => {
-      syncBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> LIVE SYNC & RELOAD`;
-      syncBtn.disabled = false;
-    }, 2000);
-  }
-}
 
 // Theme Switcher
 function toggleTheme() {
@@ -161,13 +130,20 @@ async function loadLiveAPIData() {
     });
 
     const stockRecords = await Promise.all(stockPromises);
-    globalFiiDiiData = {
+    const newData = {
       updated_at: `${dateStr} ${timeStr}`,
       daily: dailyRecords,
       stocks: stockRecords
     };
+    // Determine if data has changed compared to previous global data
+    const dataChanged = JSON.stringify(globalFiiDiiData?.daily) !== JSON.stringify(newData.daily) ||
+                        JSON.stringify(globalFiiDiiData?.stocks) !== JSON.stringify(newData.stocks);
+    // Update global data
+    globalFiiDiiData = newData;
+    // Update timestamp only if data changed
+    if (dataChanged) {
 
-    document.getElementById('last-updated').innerText = `Live API Synced: ${dateStr} ${timeStr}`;
+    }
     renderFiiDiiSection();
 
   } catch (err) {
