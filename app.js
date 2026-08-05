@@ -25,6 +25,11 @@ async function purgeAndReloadData() {
 
   await loadData();
 
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+  const dateStr = now.toISOString().split('T')[0];
+  document.getElementById('last-updated').innerText = `Synced: ${dateStr} ${timeStr}`;
+
   if (syncBtn) {
     syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
     setTimeout(() => {

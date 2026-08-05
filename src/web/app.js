@@ -32,6 +32,12 @@ async function purgeAndReloadData() {
   // Fetch with cache-busting timestamp
   await loadData();
 
+  // Update Synced Timestamp to CURRENT live time on screen!
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+  const dateStr = now.toISOString().split('T')[0];
+  document.getElementById('last-updated').innerText = `Synced: ${dateStr} ${timeStr}`;
+
   if (syncBtn) {
     syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
     setTimeout(() => {
@@ -63,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     icon.className = savedTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
   }
 
-  // Load dashboard data directly
   loadData();
 });
 
