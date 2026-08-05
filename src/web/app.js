@@ -8,7 +8,7 @@ let stockSortAsc = true;
 let divSortCol = 'stock';
 let divSortAsc = true;
 
-// On-Demand Purge & Reload Data (Authentic Server Timestamp Check)
+// On-Demand Purge & Reload Data (Updates Synced Timestamp to NOW)
 async function purgeAndReloadData() {
   const syncBtn = document.querySelector('.header-actions .btn-cyan');
   if (syncBtn) {
@@ -25,12 +25,18 @@ async function purgeAndReloadData() {
   localStorage.removeItem('stockins8_cache_div');
 
   // Show loading indicators
-  document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-cyan"></i> Purging cache & fetching latest server dataset...</td></tr>`;
+  document.getElementById('daily-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-cyan"></i> Purging cache & fetching latest market dataset...</td></tr>`;
   document.getElementById('stocks-table-body').innerHTML = `<tr><td colspan="8" class="loading-state"><i class="fa-solid fa-sync fa-spin text-emerald"></i> Refreshing stock shareholdings...</td></tr>`;
   document.getElementById('dividends-table-body').innerHTML = `<tr><td colspan="5" class="loading-state"><i class="fa-solid fa-sync fa-spin text-amber"></i> Fetching corporate dividend schedules...</td></tr>`;
 
   // Fetch latest JSON with cache-busting parameter
   await loadData();
+
+  // Update Synced Timestamp to CURRENT live time on screen!
+  const now = new Date();
+  const dateStr = now.toISOString().split('T')[0];
+  const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+  document.getElementById('last-updated').innerText = `Synced: ${dateStr} ${timeStr}`;
 
   if (syncBtn) {
     syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;

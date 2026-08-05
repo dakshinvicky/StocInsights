@@ -1,10 +1,11 @@
 """
 StockIns8 Web Application Main Entrypoint.
-Direct Application Loading with Prominent On-Demand Live Sync Button.
+Direct Application Loading with Live On-Demand Data Synchronization.
 """
 
 import sys
 import os
+from datetime import datetime
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 if ROOT_DIR not in sys.path:
@@ -13,6 +14,7 @@ if ROOT_DIR not in sys.path:
 import streamlit as st
 from src.ui.tab_fii_dii import render_tab_fii_dii
 from src.ui.tab_dividends import render_tab_dividends
+from src.utils.exporter import export_json_data
 
 st.set_page_config(
     page_title="StockIns8 Pro Terminal",
@@ -20,6 +22,10 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Initialize Session State for Last Sync Timestamp
+if "last_sync_time" not in st.session_state:
+    st.session_state["last_sync_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S IST")
 
 # Global CSS styling
 st.markdown("""
@@ -174,7 +180,18 @@ st.markdown("""
         overflow: hidden;
     }
 
-    /* Glowing Sync Button */
+    .sync-badge-st {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        background: #0d1322;
+        padding: 0.4rem 0.85rem;
+        border-radius: 20px;
+        border: 1px solid #1e293b;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
     div.stButton > button {
         background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
         color: #ffffff !important;
@@ -186,7 +203,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Direct Application Layout (Security Passcode Disabled)
+# Direct Application Layout
 st.markdown("""
 <div class="ticker-bar-st">
     <div class="ticker-item">📈 <strong>NSE NIFTY 50</strong> 24,650.00 <span style="color:#10b981">+0.45%</span></div>
@@ -196,9 +213,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-col_h1, col_h2 = st.columns([8, 4])
+col_h1, col_h2 = st.columns([7, 5])
 with col_h1:
-    st.markdown("""
+    st.markdown(f"""
     <div class="main-header-st">
         <div class="brand-section-st">
             <div class="brand-logo-st">📈</div>
@@ -208,15 +225,18 @@ with col_h1:
             </div>
         </div>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <div class="status-indicator-st">🟢 NSE Market Live</div>
+            <div class="sync-badge-st">🔄 Synced: {st.session_state['last_sync_time']}</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 with col_h2:
     if st.button("⚡ LIVE SYNC & RELOAD DATA", key="btn_sync_all", use_container_width=True):
-        st.cache_data.clear()
-        st.toast("⚡ Cleared cache & re-fetching live market data from NSE India...", icon="🚀")
+        with st.spinner("Scraping live NSE market data & re-generating static JSON files..."):
+            export_json_data("data")
+            st.cache_data.clear()
+            st.session_state["last_sync_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S IST")
+        st.toast(f"⚡ Synced live data at {st.session_state['last_sync_time']}!", icon="🚀")
         st.rerun()
 
 tab1, tab2 = st.tabs(["🏛️ FII & DII Institutional Activity", "💰 Upcoming Corporate Dividends"])
