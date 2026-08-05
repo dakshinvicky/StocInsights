@@ -1,4 +1,3 @@
-const DEFAULT_SECRET_CODE = 'STOCKINS8';
 let globalFiiDiiData = { daily: [], stocks: [] };
 let globalDividendsData = [];
 let currentStockFilter = 'all';
@@ -7,41 +6,10 @@ let stockSortAsc = true;
 let divSortCol = 'stock';
 let divSortAsc = true;
 
-function handlePasscodeSubmit(e) {
-  e.preventDefault();
-  const inputCode = (document.getElementById('secret-passcode-input').value || '').trim();
-  const errorMsg = document.getElementById('passcode-error-msg');
-
-  if (inputCode === DEFAULT_SECRET_CODE || inputCode === 'STOC2026') {
-    sessionStorage.setItem('stoc_authenticated', 'true');
-    unlockTerminalUI();
-    if (errorMsg) errorMsg.classList.add('hide');
-  } else {
-    if (errorMsg) errorMsg.classList.remove('hide');
-  }
-}
-
-function unlockTerminalUI() {
-  const overlay = document.getElementById('security-gate-overlay');
-  const mainShell = document.getElementById('app-main-shell');
-  if (overlay) overlay.classList.remove('active');
-  if (mainShell) mainShell.classList.add('unlocked');
-  loadData();
-}
-
-function lockTerminal() {
-  sessionStorage.removeItem('stoc_authenticated');
-  const overlay = document.getElementById('security-gate-overlay');
-  const mainShell = document.getElementById('app-main-shell');
-  if (overlay) overlay.classList.add('active');
-  if (mainShell) mainShell.classList.remove('unlocked');
-  document.getElementById('secret-passcode-input').value = '';
-}
-
 async function purgeAndReloadData() {
   const syncBtn = document.querySelector('.header-actions .btn-cyan');
   if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Syncing Live Data...`;
+    syncBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> SYNCING LIVE DATA...`;
     syncBtn.disabled = true;
   }
 
@@ -58,9 +26,9 @@ async function purgeAndReloadData() {
   await loadData();
 
   if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> Synced!`;
+    syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
     setTimeout(() => {
-      syncBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> Live Sync & Reload`;
+      syncBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> LIVE SYNC & RELOAD`;
       syncBtn.disabled = false;
     }, 2000);
   }
@@ -86,10 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     icon.className = savedTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
   }
 
-  const isAuth = sessionStorage.getItem('stoc_authenticated');
-  if (isAuth === 'true') {
-    unlockTerminalUI();
-  }
+  loadData();
 });
 
 function switchTab(tabName) {

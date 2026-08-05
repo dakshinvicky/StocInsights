@@ -1,6 +1,5 @@
-// STOCKINS8 PRO TERMINAL - Client Logic & Security Gate
+// STOCKINS8 PRO TERMINAL - Client Logic
 
-const DEFAULT_SECRET_CODE = 'STOCKINS8';
 let globalFiiDiiData = { daily: [], stocks: [] };
 let globalDividendsData = [];
 let currentStockFilter = 'all';
@@ -9,43 +8,11 @@ let stockSortAsc = true;
 let divSortCol = 'stock';
 let divSortAsc = true;
 
-// Authentication Handlers
-function handlePasscodeSubmit(e) {
-  e.preventDefault();
-  const inputCode = (document.getElementById('secret-passcode-input').value || '').trim();
-  const errorMsg = document.getElementById('passcode-error-msg');
-
-  if (inputCode === DEFAULT_SECRET_CODE || inputCode === 'STOC2026') {
-    sessionStorage.setItem('stoc_authenticated', 'true');
-    unlockTerminalUI();
-    if (errorMsg) errorMsg.classList.add('hide');
-  } else {
-    if (errorMsg) errorMsg.classList.remove('hide');
-  }
-}
-
-function unlockTerminalUI() {
-  const overlay = document.getElementById('security-gate-overlay');
-  const mainShell = document.getElementById('app-main-shell');
-  if (overlay) overlay.classList.remove('active');
-  if (mainShell) mainShell.classList.add('unlocked');
-  loadData();
-}
-
-function lockTerminal() {
-  sessionStorage.removeItem('stoc_authenticated');
-  const overlay = document.getElementById('security-gate-overlay');
-  const mainShell = document.getElementById('app-main-shell');
-  if (overlay) overlay.classList.add('active');
-  if (mainShell) mainShell.classList.remove('unlocked');
-  document.getElementById('secret-passcode-input').value = '';
-}
-
 // On-Demand Purge & Reload Data
 async function purgeAndReloadData() {
   const syncBtn = document.querySelector('.header-actions .btn-cyan');
   if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Syncing Live Data...`;
+    syncBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> SYNCING LIVE DATA...`;
     syncBtn.disabled = true;
   }
 
@@ -53,7 +20,7 @@ async function purgeAndReloadData() {
   globalFiiDiiData = { daily: [], stocks: [] };
   globalDividendsData = [];
 
-  // Clear caches
+  // Clear local storage caches
   localStorage.removeItem('stockins8_cache_fii');
   localStorage.removeItem('stockins8_cache_div');
 
@@ -66,9 +33,9 @@ async function purgeAndReloadData() {
   await loadData();
 
   if (syncBtn) {
-    syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> Synced!`;
+    syncBtn.innerHTML = `<i class="fa-solid fa-check text-emerald"></i> SYNCED!`;
     setTimeout(() => {
-      syncBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> Live Sync & Reload`;
+      syncBtn.innerHTML = `<i class="fa-solid fa-bolt"></i> LIVE SYNC & RELOAD`;
       syncBtn.disabled = false;
     }, 2000);
   }
@@ -87,7 +54,7 @@ function toggleTheme() {
   }
 }
 
-// Initialization
+// Initialization (Direct Load)
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
@@ -96,10 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     icon.className = savedTheme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
   }
 
-  const isAuth = sessionStorage.getItem('stoc_authenticated');
-  if (isAuth === 'true') {
-    unlockTerminalUI();
-  }
+  // Load dashboard data directly
+  loadData();
 });
 
 function switchTab(tabName) {
@@ -127,7 +92,7 @@ function formatNumber(val, decimals = 2) {
   return parseFloat(val).toLocaleString('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 
-// Load static JSON datasets & refresh live prices
+// Load static JSON datasets
 async function loadData() {
   const timestamp = Date.now();
   try {

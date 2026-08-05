@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StockIns8 | Security Gate Pro Terminal</title>
+  <title>StockIns8 | Pro Market Terminal</title>
   <meta name="description" content="StockIns8 Institutional Market Flow (FII/DII) & Corporate Dividend Intelligence Platform for Indian Equities (NSE).">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,29 +14,7 @@
 </head>
 <body>
 
-  <!-- Security Passcode Overlay Gate -->
-  <div id="security-gate-overlay" class="security-overlay active">
-    <div class="security-modal">
-      <div class="security-icon">
-        <i class="fa-solid fa-lock"></i>
-      </div>
-      <h2>STOCKINS8 SECURITY GATE</h2>
-      <p class="security-sub">Authorized access only. Enter secret passcode to unlock terminal.</p>
-      
-      <form onsubmit="handlePasscodeSubmit(event)">
-        <div class="form-group margin-bottom-lg">
-          <input type="password" id="secret-passcode-input" class="form-control text-center font-mono" placeholder="Enter secret code..." required>
-        </div>
-        <div id="passcode-error-msg" class="error-badge hide">❌ Invalid secret code. Access denied.</div>
-        <button type="submit" class="btn btn-cyan btn-full">
-          <i class="fa-solid fa-key"></i> Unlock StockIns8
-        </button>
-      </form>
-      <p class="passcode-hint">Default Secret Code: <code>STOCKINS8</code></p>
-    </div>
-  </div>
-
-  <div class="app-shell blur-protected" id="app-main-shell">
+  <div class="app-shell" id="app-main-shell">
     <div class="ticker-bar">
       <div class="ticker-content" id="ticker-marquee">
         <span class="ticker-item"><i class="fa-solid fa-arrow-trend-up text-emerald"></i> <strong>NSE NIFTY 50</strong> 24,650.00 <span class="badge-emerald">+0.45%</span></span>
@@ -68,14 +46,11 @@
         <div class="last-sync" id="last-sync-badge">
           <i class="fa-solid fa-rotate"></i> <span id="last-updated">Updating...</span>
         </div>
-        <button class="btn btn-cyan" onclick="purgeAndReloadData()" title="Purge Cache & Fetch Fresh Data">
-          <i class="fa-solid fa-bolt"></i> Live Sync & Reload
+        <button class="btn btn-cyan btn-glow" onclick="purgeAndReloadData()" title="Purge Cache & Fetch Fresh Data">
+          <i class="fa-solid fa-bolt"></i> LIVE SYNC & RELOAD
         </button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
           <i class="fa-solid fa-moon" id="theme-icon"></i>
-        </button>
-        <button class="btn btn-outline" onclick="lockTerminal()" title="Lock Terminal Session">
-          <i class="fa-solid fa-lock text-rose"></i> Lock Terminal
         </button>
       </div>
     </header>

@@ -1,6 +1,6 @@
 """
 StockIns8 Web Application Main Entrypoint.
-Includes Passcode Security Gate Authentication & On-Demand Live Sync Engine.
+Direct Application Loading with Prominent On-Demand Live Sync Button.
 """
 
 import sys
@@ -13,9 +13,6 @@ if ROOT_DIR not in sys.path:
 import streamlit as st
 from src.ui.tab_fii_dii import render_tab_fii_dii
 from src.ui.tab_dividends import render_tab_dividends
-
-# Configurable secret passcode (defaults to STOCKINS8 or STOC2026)
-DEFAULT_SECRET_CODE = os.environ.get("APP_SECRET_CODE", "STOCKINS8")
 
 st.set_page_config(
     page_title="StockIns8 Pro Terminal",
@@ -36,48 +33,6 @@ st.markdown("""
     .stApp {
         background-color: #090d16 !important;
         color: #f8fafc !important;
-    }
-
-    /* Security Gate Login Box */
-    .login-container {
-        max-width: 440px;
-        margin: 4rem auto;
-        background: rgba(18, 25, 41, 0.9);
-        backdrop-filter: blur(20px);
-        border: 1px solid #1e293b;
-        border-top: 4px solid #38bdf8;
-        padding: 2.5rem 2rem;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        text-align: center;
-    }
-
-    .login-icon {
-        width: 64px;
-        height: 64px;
-        background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        color: #ffffff;
-        margin: 0 auto 1.5rem auto;
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-    }
-
-    .login-title {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #f8fafc;
-        margin-bottom: 0.4rem;
-        letter-spacing: -0.02em;
-    }
-
-    .login-sub {
-        font-size: 0.875rem;
-        color: #94a3b8;
-        margin-bottom: 1.5rem;
     }
 
     /* Top Ticker Bar */
@@ -218,42 +173,20 @@ st.markdown("""
         border: 1px solid #1e293b;
         overflow: hidden;
     }
+
+    /* Glowing Sync Button */
+    div.stButton > button {
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        border: 1px solid #38bdf8 !important;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.3) !important;
+        border-radius: 10px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Session state initialization for authentication
-if "authenticated" not in st.session_state:
-    st.session_state["authenticated"] = False
-
-# Security Gate Screen if unauthenticated
-if not st.session_state["authenticated"]:
-    st.markdown("""
-    <div class="login-container">
-        <div class="login-icon">🔒</div>
-        <div class="login-title">STOCKINS8 SECURITY GATE</div>
-        <div class="login-sub">Authorized access only. Enter secret passcode to unlock terminal.</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col_l1, col_l2, col_l3 = st.columns([3, 4, 3])
-    with col_l2:
-        passcode_input = st.text_input("Secret Access Passcode:", type="password", key="pass_input", placeholder="Enter secret code...")
-        if st.button("🔓 Unlock StockIns8", use_container_width=True):
-            clean_code = passcode_input.strip() if passcode_input else ""
-            if clean_code in [DEFAULT_SECRET_CODE, "STOCKINS8", "STOC2026"]:
-                st.session_state["authenticated"] = True
-                st.rerun()
-            else:
-                st.error("❌ Invalid secret passcode! Access denied.")
-
-    st.markdown("""
-    <div style="text-align: center; font-size: 0.8rem; color: #64748b; margin-top: 2rem;">
-        Default Secret Code: <code>STOCKINS8</code> (Configurable via APP_SECRET_CODE env variable)
-    </div>
-    """, unsafe_allow_html=True)
-    st.stop()
-
-# Authenticated Terminal Layout
+# Direct Application Layout (Security Passcode Disabled)
 st.markdown("""
 <div class="ticker-bar-st">
     <div class="ticker-item">📈 <strong>NSE NIFTY 50</strong> 24,650.00 <span style="color:#10b981">+0.45%</span></div>
@@ -263,7 +196,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-col_h1, col_h2, col_h3 = st.columns([8, 2, 2])
+col_h1, col_h2 = st.columns([8, 4])
 with col_h1:
     st.markdown("""
     <div class="main-header-st">
@@ -281,14 +214,9 @@ with col_h1:
     """, unsafe_allow_html=True)
 
 with col_h2:
-    if st.button("⚡ Live Sync & Reload", key="btn_sync_all", use_container_width=True):
+    if st.button("⚡ LIVE SYNC & RELOAD DATA", key="btn_sync_all", use_container_width=True):
         st.cache_data.clear()
-        st.toast("⚡ Cleared cache & re-fetching live market data...", icon="🚀")
-        st.rerun()
-
-with col_h3:
-    if st.button("🔒 Lock Terminal", key="btn_logout", use_container_width=True):
-        st.session_state["authenticated"] = False
+        st.toast("⚡ Cleared cache & re-fetching live market data from NSE India...", icon="🚀")
         st.rerun()
 
 tab1, tab2 = st.tabs(["🏛️ FII & DII Institutional Activity", "💰 Upcoming Corporate Dividends"])
