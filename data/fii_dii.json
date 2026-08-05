@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-05 20:41:24 IST",
+  "updated_at": "2026-08-05 20:43:10 IST",
   "daily": [
     {
       "Category": "DII",
@@ -17,6 +17,34 @@
     }
   ],
   "stocks": [
+    {
+      "Stock": "ICICIBANK",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 33.79,
+      "FII Prev (%)": 34.48,
+      "FII QoQ Change (%)": -0.69,
+      "DII (%)": 42.32,
+      "DII Prev (%)": 39.94,
+      "DII QoQ Change (%)": 2.38,
+      "Promoter (%)": 0.0,
+      "Public (%)": 23.68,
+      "CMP": 1450.1
+    },
+    {
+      "Stock": "RELIANCE",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 17.19,
+      "FII Prev (%)": 18.67,
+      "FII QoQ Change (%)": -1.48,
+      "DII (%)": 21.1,
+      "DII Prev (%)": 20.46,
+      "DII QoQ Change (%)": 0.64,
+      "Promoter (%)": 50.48,
+      "Public (%)": 11.05,
+      "CMP": 1280.0
+    },
     {
       "Stock": "MARUTI",
       "Latest Quarter": "Jun 2026",
@@ -46,32 +74,60 @@
       "CMP": 1253.9
     },
     {
-      "Stock": "ONGC",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 8.01,
-      "FII Prev (%)": 7.97,
-      "FII QoQ Change (%)": 0.04,
-      "DII (%)": 19.31,
-      "DII Prev (%)": 19.3,
-      "DII QoQ Change (%)": 0.01,
-      "Promoter (%)": 58.89,
-      "Public (%)": 3.5,
-      "CMP": 240.2
+      "Stock": "POWERGRID",
+      "Latest Quarter": "N/A",
+      "Prev Quarter": "N/A",
+      "FII (%)": null,
+      "FII Prev (%)": null,
+      "FII QoQ Change (%)": null,
+      "DII (%)": null,
+      "DII Prev (%)": null,
+      "DII QoQ Change (%)": null,
+      "Promoter (%)": null,
+      "Public (%)": null,
+      "CMP": 281.75
     },
     {
-      "Stock": "RELIANCE",
+      "Stock": "TCS",
       "Latest Quarter": "Jun 2026",
       "Prev Quarter": "Mar 2026",
-      "FII (%)": 17.19,
-      "FII Prev (%)": 18.67,
-      "FII QoQ Change (%)": -1.48,
-      "DII (%)": 21.1,
-      "DII Prev (%)": 20.46,
-      "DII QoQ Change (%)": 0.64,
-      "Promoter (%)": 50.48,
-      "Public (%)": 11.05,
-      "CMP": 1280.0
+      "FII (%)": 9.07,
+      "FII Prev (%)": 9.66,
+      "FII QoQ Change (%)": -0.59,
+      "DII (%)": 13.41,
+      "DII Prev (%)": 13.34,
+      "DII QoQ Change (%)": 0.07,
+      "Promoter (%)": 71.77,
+      "Public (%)": 5.69,
+      "CMP": 2413.0
+    },
+    {
+      "Stock": "SBIN",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 10.81,
+      "FII Prev (%)": 11.41,
+      "FII QoQ Change (%)": -0.6,
+      "DII (%)": 26.52,
+      "DII Prev (%)": 26.11,
+      "DII QoQ Change (%)": 0.41,
+      "Promoter (%)": 55.47,
+      "Public (%)": 7.06,
+      "CMP": 1055.0
+    },
+    {
+      "Stock": "BHARTIARTL",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 26.48,
+      "FII Prev (%)": 27.79,
+      "FII QoQ Change (%)": -1.31,
+      "DII (%)": 20.64,
+      "DII Prev (%)": 20.53,
+      "DII QoQ Change (%)": 0.11,
+      "Promoter (%)": 50.07,
+      "Public (%)": 2.64,
+      "CMP": 1978.0
     },
     {
       "Stock": "SUNPHARMA",
@@ -86,6 +142,20 @@
       "Promoter (%)": 54.48,
       "Public (%)": 8.81,
       "CMP": 1940.0
+    },
+    {
+      "Stock": "ONGC",
+      "Latest Quarter": "Jun 2026",
+      "Prev Quarter": "Mar 2026",
+      "FII (%)": 8.01,
+      "FII Prev (%)": 7.97,
+      "FII QoQ Change (%)": 0.04,
+      "DII (%)": 19.31,
+      "DII Prev (%)": 19.3,
+      "DII QoQ Change (%)": 0.01,
+      "Promoter (%)": 58.89,
+      "Public (%)": 3.5,
+      "CMP": 240.2
     },
     {
       "Stock": "M&M",
@@ -130,20 +200,6 @@
       "CMP": 1174.0
     },
     {
-      "Stock": "NTPC",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 16.3,
-      "FII Prev (%)": 16.54,
-      "FII QoQ Change (%)": -0.24,
-      "DII (%)": 29.44,
-      "DII Prev (%)": 29.13,
-      "DII QoQ Change (%)": 0.31,
-      "Promoter (%)": 51.1,
-      "Public (%)": 3.14,
-      "CMP": 349.9
-    },
-    {
       "Stock": "HDFCBANK",
       "Latest Quarter": "Jun 2026",
       "Prev Quarter": "Mar 2026",
@@ -156,34 +212,6 @@
       "Promoter (%)": 0.0,
       "Public (%)": 16.27,
       "CMP": 735.0
-    },
-    {
-      "Stock": "TCS",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 9.07,
-      "FII Prev (%)": 9.66,
-      "FII QoQ Change (%)": -0.59,
-      "DII (%)": 13.41,
-      "DII Prev (%)": 13.34,
-      "DII QoQ Change (%)": 0.07,
-      "Promoter (%)": 71.77,
-      "Public (%)": 5.69,
-      "CMP": 2413.0
-    },
-    {
-      "Stock": "POWERGRID",
-      "Latest Quarter": "N/A",
-      "Prev Quarter": "N/A",
-      "FII (%)": null,
-      "FII Prev (%)": null,
-      "FII QoQ Change (%)": null,
-      "DII (%)": null,
-      "DII Prev (%)": null,
-      "DII QoQ Change (%)": null,
-      "Promoter (%)": null,
-      "Public (%)": null,
-      "CMP": 281.75
     },
     {
       "Stock": "ITC",
@@ -200,21 +228,7 @@
       "CMP": 286.95
     },
     {
-      "Stock": "SBIN",
-      "Latest Quarter": "Jun 2026",
-      "Prev Quarter": "Mar 2026",
-      "FII (%)": 10.81,
-      "FII Prev (%)": 11.41,
-      "FII QoQ Change (%)": -0.6,
-      "DII (%)": 26.52,
-      "DII Prev (%)": 26.11,
-      "DII QoQ Change (%)": 0.41,
-      "Promoter (%)": 55.47,
-      "Public (%)": 7.06,
-      "CMP": 1055.0
-    },
-    {
-      "Stock": "ICICIBANK",
+      "Stock": "NTPC",
       "Latest Quarter": "N/A",
       "Prev Quarter": "N/A",
       "FII (%)": null,
@@ -225,21 +239,7 @@
       "DII QoQ Change (%)": null,
       "Promoter (%)": null,
       "Public (%)": null,
-      "CMP": 1450.1
-    },
-    {
-      "Stock": "BHARTIARTL",
-      "Latest Quarter": "N/A",
-      "Prev Quarter": "N/A",
-      "FII (%)": null,
-      "FII Prev (%)": null,
-      "FII QoQ Change (%)": null,
-      "DII (%)": null,
-      "DII Prev (%)": null,
-      "DII QoQ Change (%)": null,
-      "Promoter (%)": null,
-      "Public (%)": null,
-      "CMP": 1978.0
+      "CMP": 349.9
     }
   ]
 }
