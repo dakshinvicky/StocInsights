@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indian Market Intelligence | Professional Institutional & Dividend Terminal</title>
+  <meta name="description" content="Institutional Market Flow (FII/DII) & Corporate Dividend Intelligence Platform for Indian Equities (NSE).">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="ticker-bar">
+      <div class="ticker-content" id="ticker-marquee">
+        <span class="ticker-item"><i class="fa-solid fa-arrow-trend-up text-emerald"></i> <strong>NSE NIFTY 50</strong> 24,650.00 <span class="badge-emerald">+0.45%</span></span>
+        <span class="ticker-item"><i class="fa-solid fa-building-columns text-cyan"></i> <strong>FII CASH FLOW</strong> <span id="ticker-fii">Loading...</span></span>
+        <span class="ticker-item"><i class="fa-solid fa-landmark text-purple"></i> <strong>DII CASH FLOW</strong> <span id="ticker-dii">Loading...</span></span>
+        <span class="ticker-item"><i class="fa-solid fa-hand-holding-dollar text-amber"></i> <strong>UPCOMING DIVIDENDS</strong> <span id="ticker-div">Loading...</span></span>
+      </div>
+    </div>
+
+    <header class="main-header">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div>
+          <div class="brand-title">
+            MARKET<span>INTEL</span>
+            <span class="pro-tag">PRO TERMINAL</span>
+          </div>
+          <p class="brand-sub">Institutional Flow Tracker & Dividend Yield Intelligence</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-indicator">
+          <span class="pulse-dot"></span>
+          <span id="market-status-text">NSE Market Live</span>
+        </div>
+        <div class="last-sync" id="last-sync-badge">
+          <i class="fa-solid fa-rotate"></i> <span id="last-updated">Updating...</span>
+        </div>
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+      </div>
+    </header>
+
+    <nav class="nav-tabs">
+      <button class="tab-btn active" id="tab-fii-btn" onclick="switchTab('fii')">
+        <i class="fa-solid fa-building-columns"></i>
+        <span>FII & DII Institutional Activity</span>
+        <span class="tab-badge" id="fii-count-badge">Live</span>
+      </button>
+      <button class="tab-btn" id="tab-div-btn" onclick="switchTab('dividends')">
+        <i class="fa-solid fa-coins"></i>
+        <span>Upcoming Corporate Dividends</span>
+        <span class="tab-badge badge-amber" id="div-count-badge">0</span>
+      </button>
+    </nav>
+
+    <main id="tab-fii" class="tab-pane active">
+      <section class="metrics-row">
+        <div class="pro-card metric-card border-cyan">
+          <div class="metric-head">
+            <span class="metric-label">FII / FPI NET FLOW</span>
+            <div class="icon-circle icon-cyan"><i class="fa-solid fa-globe"></i></div>
+          </div>
+          <div class="metric-amount" id="fii-net-val">₹ 0.00 Cr</div>
+          <div class="metric-footer">
+            <span class="sentiment-tag" id="fii-sentiment">Analyzing...</span>
+            <span class="text-muted">Cash Market Net</span>
+          </div>
+        </div>
+
+        <div class="pro-card metric-card border-purple">
+          <div class="metric-head">
+            <span class="metric-label">DII NET FLOW</span>
+            <div class="icon-circle icon-purple"><i class="fa-solid fa-landmark"></i></div>
+          </div>
+          <div class="metric-amount" id="dii-net-val">₹ 0.00 Cr</div>
+          <div class="metric-footer">
+            <span class="sentiment-tag" id="dii-sentiment">Analyzing...</span>
+            <span class="text-muted">Cash Market Net</span>
+          </div>
+        </div>
+
+        <div class="pro-card metric-card border-emerald">
+          <div class="metric-head">
+            <span class="metric-label">COMBINED INSTITUTIONAL NET</span>
+            <div class="icon-circle icon-emerald"><i class="fa-solid fa-scale-balanced"></i></div>
+          </div>
+          <div class="metric-amount" id="total-flow-val">₹ 0.00 Cr</div>
+          <div class="metric-footer">
+            <span class="sentiment-badge" id="market-sentiment-badge">Bullish</span>
+            <span class="text-muted">Total Net Flow</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="pro-card section-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><i class="fa-solid fa-calendar-day text-cyan"></i> Daily Institutional Cash Market Activity</h2>
+            <p class="card-subtitle">Live daily net buying & selling totals published by National Stock Exchange of India</p>
+          </div>
+          <button class="btn btn-outline" onclick="exportTableToCSV('daily-table', 'daily_fii_dii_flows.csv')">
+            <i class="fa-solid fa-file-csv"></i> Export CSV
+          </button>
+        </div>
+        <div class="table-container">
+          <table id="daily-table" class="pro-table">
+            <thead>
+              <tr>
+                <th>Institutional Category</th>
+                <th>Trade Date</th>
+                <th>Gross Buy Value (₹ Cr)</th>
+                <th>Gross Sell Value (₹ Cr)</th>
+                <th>Net Flow (₹ Cr)</th>
+              </tr>
+            </thead>
+            <tbody id="daily-table-body">
+              <tr><td colspan="5" class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Fetching live NSE institutional activity...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="pro-card section-card">
+        <div class="card-header flex-header">
+          <div>
+            <h2 class="card-title"><i class="fa-solid fa-chart-pie text-emerald"></i> Quarterly Stock Shareholding Changes (FII & DII)</h2>
+            <p class="card-subtitle">Quarter-over-Quarter holding variations and live Current Market Prices (CMP)</p>
+          </div>
+          
+          <div class="toolbar-group">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="stock-search-input" placeholder="Filter ticker (e.g. RELIANCE, TCS)..." onkeyup="filterStockTable()">
+            </div>
+            
+            <div class="pill-group">
+              <button class="pill-btn active" id="filter-all-btn" onclick="setStockFilter('all')">All Stocks</button>
+              <button class="pill-btn" id="filter-fii-buy-btn" onclick="setStockFilter('fii-buy')">🟢 FII Buying</button>
+              <button class="pill-btn" id="filter-fii-sell-btn" onclick="setStockFilter('fii-sell')">🔴 FII Selling</button>
+              <button class="pill-btn" id="filter-dii-buy-btn" onclick="setStockFilter('dii-buy')">🟢 DII Buying</button>
+            </div>
+
+            <button class="btn btn-outline" onclick="exportTableToCSV('stocks-table', 'fii_dii_stock_holdings.csv')">
+              <i class="fa-solid fa-file-csv"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table id="stocks-table" class="pro-table">
+            <thead>
+              <tr>
+                <th onclick="sortStockTable('Stock')">Stock Ticker <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortStockTable('CMP')">CMP (₹) <i class="fa-solid fa-sort"></i></th>
+                <th>Latest Quarter</th>
+                <th>Prev Quarter</th>
+                <th onclick="sortStockTable('FII (%)')">FII Holding (%) <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortStockTable('FII QoQ Change (%)')">FII QoQ Change <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortStockTable('DII (%)')">DII Holding (%) <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortStockTable('DII QoQ Change (%)')">DII QoQ Change <i class="fa-solid fa-sort"></i></th>
+              </tr>
+            </thead>
+            <tbody id="stocks-table-body">
+              <tr><td colspan="8" class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Loading stock shareholding records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <main id="tab-dividends" class="tab-pane">
+      <section class="metrics-row">
+        <div class="pro-card metric-card border-amber">
+          <div class="metric-head">
+            <span class="metric-label">UPCOMING DIVIDEND ACTIONS</span>
+            <div class="icon-circle icon-amber"><i class="fa-solid fa-calendar-check"></i></div>
+          </div>
+          <div class="metric-amount" id="div-count-val">0</div>
+          <div class="metric-footer">
+            <span class="text-muted">Corporate Announcements</span>
+          </div>
+        </div>
+
+        <div class="pro-card metric-card border-cyan">
+          <div class="metric-head">
+            <span class="metric-label">MAX DIVIDEND PAYOUT</span>
+            <div class="icon-circle icon-cyan"><i class="fa-solid fa-sack-dollar"></i></div>
+          </div>
+          <div class="metric-amount" id="div-max-val">₹ 0.00</div>
+          <div class="metric-footer">
+            <span class="text-muted">Highest Dividend Per Share</span>
+          </div>
+        </div>
+
+        <div class="pro-card metric-card border-emerald">
+          <div class="metric-head">
+            <span class="metric-label">MAX ESTIMATED EARNING</span>
+            <div class="icon-circle icon-emerald"><i class="fa-solid fa-piggy-bank"></i></div>
+          </div>
+          <div class="metric-amount" id="div-top-calc-val">₹ 0.00</div>
+          <div class="metric-footer">
+            <span class="text-muted" id="div-top-calc-sub">Based on ₹1,00,000 capital</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="pro-card calculator-panel">
+        <div class="calc-header">
+          <div>
+            <h3 class="calc-title"><i class="fa-solid fa-calculator text-amber"></i> Interactive Dividend Yield Earnings Calculator</h3>
+            <p class="calc-sub">Simulate estimated dividend cash returns based on your capital allocation</p>
+          </div>
+          <div class="quick-preset-btns">
+            <span class="preset-label">Quick Capital Presets:</span>
+            <button class="btn btn-sm btn-preset" onclick="setCapitalPreset(50000)">₹50K</button>
+            <button class="btn btn-sm btn-preset active" onclick="setCapitalPreset(100000)">₹1 Lakh</button>
+            <button class="btn btn-sm btn-preset" onclick="setCapitalPreset(500000)">₹5 Lakhs</button>
+            <button class="btn btn-sm btn-preset" onclick="setCapitalPreset(1000000)">₹10 Lakhs</button>
+          </div>
+        </div>
+
+        <div class="calc-inputs-grid">
+          <div class="form-group">
+            <label for="div-search-input"><i class="fa-solid fa-magnifying-glass"></i> Filter Ticker Symbol</label>
+            <input type="text" id="div-search-input" class="form-control" placeholder="Search symbol (e.g. SBIN, TCS)..." onkeyup="renderDividendsTable()">
+          </div>
+
+          <div class="form-group">
+            <label for="div-investment-input"><i class="fa-solid fa-indian-rupee-sign"></i> Capital Allocation (₹)</label>
+            <input type="number" id="div-investment-input" class="form-control font-mono" value="100000" step="10000" min="1000" onchange="renderDividendsTable()" onkeyup="renderDividendsTable()">
+          </div>
+        </div>
+      </section>
+
+      <section class="pro-card section-card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><i class="fa-solid fa-hand-holding-dollar text-amber"></i> Corporate Dividend Schedule</h2>
+            <p class="card-subtitle">Ex-Dividend dates, declared payout per share, CMP, and calculated income</p>
+          </div>
+          <button class="btn btn-outline" onclick="exportTableToCSV('dividends-table', 'upcoming_dividends_schedule.csv')">
+            <i class="fa-solid fa-file-csv"></i> Export CSV
+          </button>
+        </div>
+        <div class="table-container">
+          <table id="dividends-table" class="pro-table">
+            <thead>
+              <tr>
+                <th onclick="sortDividendsTable('stock')">Stock Ticker <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortDividendsTable('dividentex date')">Ex-Dividend Date <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortDividendsTable('CMP')">CMP (₹) <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortDividendsTable('Divident per share')">Dividend / Share (₹) <i class="fa-solid fa-sort"></i></th>
+                <th onclick="sortDividendsTable('calculated_div')">Est. Cash Return (₹) <i class="fa-solid fa-sort"></i></th>
+              </tr>
+            </thead>
+            <tbody id="dividends-table-body">
+              <tr><td colspan="5" class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Loading dividend schedule...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pro-footer">
+      <div class="footer-content">
+        <p><strong>MARKETINTEL PRO TERMINAL</strong> • Automated Financial Scraper Engine</p>
+        <p class="footer-sub">Data compiled from NSE India & Screener.in • Deployed via GitHub Actions</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

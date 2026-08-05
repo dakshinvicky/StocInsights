@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indian-market-intelligence"
+version = "1.0.0"
+description = "Live FII/DII Institutional Activity & Upcoming Corporate Dividends Tracker Framework"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "streamlit>=1.30.0",
+    "pandas>=2.0.0",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+]
+
+[project.scripts]
+market-intel = "main:main"
